@@ -26,8 +26,10 @@ def run_daily_report():
         logger.info("🚀 마무리 경제 브리핑 시작")
         logger.info("="*70)
         
-        # Collector 생성 (실제 환경에서는 mock_mode=False)
-        collector = MarketDataCollector(mock_mode=True)
+        # Collector 생성 (환경변수가 있으면 실제 모드, 없으면 Mock)
+        import os
+        has_env = os.getenv('TELEGRAM_BOT_TOKEN') and os.getenv('TELEGRAM_CHAT_ID')
+        collector = MarketDataCollector(mock_mode=not has_env)
         
         # 리포트 생성 및 발송
         report, data, korea_data, ai_insight, telegram_result = collector.generate_and_send_report()
@@ -61,7 +63,7 @@ def start_scheduler(test_mode=False):
         test_immediate_run()
     else:
         # 실제 운영: 매일 오전 7시 실행
-        schedule.every().day.at("22:47").do(run_daily_report)
+        schedule.every().day.at("07:00").do(run_daily_report)
         
         logger.info("⏰ 스케줄러 시작!")
         logger.info("   매일 오전 7시에 자동 실행됩니다.")
