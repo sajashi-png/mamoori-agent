@@ -61,7 +61,7 @@ def start_scheduler(test_mode=False):
         test_immediate_run()
     else:
         # 실제 운영: 매일 오전 7시 실행
-        schedule.every().day.at("07:57").do(run_daily_report)
+        schedule.every().day.at("22:47").do(run_daily_report)
         
         logger.info("⏰ 스케줄러 시작!")
         logger.info("   매일 오전 7시에 자동 실행됩니다.")
